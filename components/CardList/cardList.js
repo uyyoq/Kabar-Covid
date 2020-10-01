@@ -3,7 +3,7 @@ import React from 'react'
 const CardList = (props) => {
   return (
     <div>
-      <div className="flex flex-row justify-center content-center items-baseline w-full m-3">
+      <div className="flex flex-row justify-start items-baseline w-full m-3 md:pl-40">
 
         <div className="flex items-center justify-center pt-1">
           <div className="rounded-md bg-black w-2 h-2"></div>
@@ -22,7 +22,7 @@ const CardList = (props) => {
             <p className="px-2 text-xs italic text-gray-800" >{props.source}</p>
           </div>
         </div>
-
+        
       </div>
     </div>
   )
