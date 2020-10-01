@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import CardList from '../components/CardList/cardList'
+import Footer from '../components/Footer/footer'
 
 
 const KabarCovid = ({ data }) => {
@@ -20,6 +21,7 @@ const KabarCovid = ({ data }) => {
           </div>
         ))
       }
+      <Footer />
     </div>
   )
 }
