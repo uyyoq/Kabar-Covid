@@ -5,7 +5,7 @@ import CardList from '../components/CardList/cardList'
 
 const KabarCovid = ({ data }) => {
   return (
-    <div className="flex flex-col justify-start align-center mt-24">
+    <div className="flex flex-col justify-center align-center pt-24 w-full my-0 mx-auto md:w-2/4">
       <Navbar />
       {
         data.articles.map(data => (
