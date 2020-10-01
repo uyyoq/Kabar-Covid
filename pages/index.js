@@ -1,11 +1,12 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import CardList from '../components/CardList/cardList'
+import Footer from '../components/Footer/footer'
 
 
 const KabarCovid = ({ data }) => {
   return (
-    <div className="flex flex-col justify-center align-center pt-24 w-full my-0 mx-auto md:w-2/4">
+    <div className="flex flex-col justify-center align-center pt-24 w-full my-0 mx-auto md:w-1/2">
       <Navbar />
       {
         data.articles.map(data => (
@@ -20,6 +21,7 @@ const KabarCovid = ({ data }) => {
           </div>
         ))
       }
+      <Footer />
     </div>
   )
 }
