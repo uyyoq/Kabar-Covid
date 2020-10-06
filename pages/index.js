@@ -1,32 +1,38 @@
 import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import CardList from '../components/CardList/cardList'
-import Footer from '../components/Footer/footer'
+import Fab from '../components/Fab/fab'
 import axios from "axios"
 import { getArticle } from "../constant/api"
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+// import Loading from "../components/Loading/loading"
 
 const KabarCovid = () => {
   const [page, setPage] = useState(1);
   const [dataArticles, setDataArticles] = useState([]);
 
-  useEffect(async () => {
+  const getDataFetch = async () => {
     const res = await axios.get(`${getArticle(page)}`);
     setDataArticles(res.data.articles)
+  }
+
+  const fetch = async () => {
+    const res = await axios.get(`${getArticle(page)}`);
+    setDataArticles(dataArticles.concat(res.data.articles))
+  } 
+  if (dataArticles !== []) {
+    setTimeout(() => {
+      fetch()
+    }, 5000)
+  }
+ 
+  useEffect(async () => {
+   getDataFetch()
   }, [])
 
   useEffect(() => {
-    const fetch = async () => {
-      const res = await axios.get(`${getArticle(page)}`);
-      setDataArticles(dataArticles.concat(res.data.articles))
-    }
-
-    if (dataArticles !== []) {
-      setTimeout(()=>{
-        fetch();
-      },1500)
-    }
+   fetch()
+   
   }, [page])
 
   const fetchMoreData = () => {
@@ -40,7 +46,7 @@ const KabarCovid = () => {
         dataLength={dataArticles.length} // this props should arrays
         next={fetchMoreData} // event call when
         hasMore={true}
-        loader={<h1><strong>Loading...</strong></h1>}
+        loader={<h1>Loading</h1>}
       >
         {
           dataArticles.map(data => (
@@ -57,7 +63,7 @@ const KabarCovid = () => {
         }
       </InfiniteScroll >
 
-      <Footer />
+      <Fab />
     </div>
   )
 }
