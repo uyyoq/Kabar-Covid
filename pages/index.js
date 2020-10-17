@@ -5,6 +5,7 @@ import Fab from '../components/Fab/fab'
 import axios from "axios"
 import { getArticle } from "../constant/api"
 import InfiniteScroll from 'react-infinite-scroll-component';
+import HeadComponent from '../components/Head/head'
 // import Loading from "../components/Loading/loading"
 
 const KabarCovid = () => {
@@ -16,23 +17,21 @@ const KabarCovid = () => {
     setDataArticles(res.data.articles)
   }
 
-  const fetch = async () => {
-    const res = await axios.get(`${getArticle(page)}`);
-    setDataArticles(dataArticles.concat(res.data.articles))
-  } 
-  if (dataArticles !== []) {
-    setTimeout(() => {
-      fetch()
-    }, 5000)
-  }
- 
   useEffect(async () => {
-   getDataFetch()
+    getDataFetch()
   }, [])
 
   useEffect(() => {
-   fetch()
-   
+    //  fetch()
+    const fetch = async () => {
+      const res = await axios.get(`${getArticle(page)}`);
+      setDataArticles(dataArticles.concat(res.data.articles))
+    }
+    if (dataArticles !== []) {
+      setTimeout(() => {
+        fetch()
+      }, 5000)
+    }
   }, [page])
 
   const fetchMoreData = () => {
@@ -41,6 +40,7 @@ const KabarCovid = () => {
 
   return (
     <div className="flex flex-col justify-center items-baseline pt-24 w-full my-0 mx-auto md:w-1/2">
+      <HeadComponent />
       <Navbar />
       <InfiniteScroll
         dataLength={dataArticles.length} // this props should arrays
@@ -67,16 +67,5 @@ const KabarCovid = () => {
     </div>
   )
 }
-
-// export async function getStaticProps() {
-//   const res = await fetch('https://newsapi.org/v2/everything?q=covid&apiKey=4055e2c89faa40e384b1dd16c0daef44')
-//   const data = await res.json()
-//   return {
-//     props: {
-//       data,
-//     },
-//   }
-// }
-
 
 export default KabarCovid

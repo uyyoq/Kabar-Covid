@@ -1,51 +1,81 @@
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
+import { useEffect, useState } from "react"
+import axios from "axios"
+import dayjs from "dayjs"
+import 'dayjs/locale/id'
+import Navbar from '../components/Navbar';
 
-const data = [
-  {
-   negara:'Singapura',kematian: 2400, sembuh: 2400,
-  },
-  {
-   negara: 'Malaysia', kematian: 1398, sembuh: 2210,
-  },
-  {
-   negara: 'Indonesia', kematian: 9800, sembuh: 2290,
-  },
-  {
-   negara: 'Filiphina',kematian: 3908, sembuh: 2000,
-  },
-  {
-   negara: 'Thailand',kematian: 4800, sembuh: 2181,
-  },
-  {
-   negara: 'Brunei',kematian: 3800, sembuh: 2500,
-  },
-  {
-   negara: 'Myanmar',kematian: 4300, sembuh: 2100,
-  },
-];
+const Graphic = (props) => {
+  // create state
+  const [data, setData] = useState([{ date: 0, dead: 0, recovered: 0 }])
 
-const Graphic = () => {
-  return(
-    <div>
-      <LineChart
-        width={1000}
-        height={500}
-        data={data}
-        margin={{
-          top: 50, left: 200, right: 150,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="negara" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="kematian" stroke="#8884d8" activeDot={{ r: 8 }} />
-        <Line type="monotone" dataKey="sembuh" stroke="#82ca9d" />
-      </LineChart>
-    </div>
+  useEffect(() => {
+    const fethcer = async () => {
+      const res = await axios.get("https://api.covid19api.com/country/italy?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z");
+      // console.log(res.data)
+
+      const rawData = res.data
+
+      const finalData = rawData.map(data => { return { date: dayjs(data.Date).format('D'), death: data.Deaths, recovered: data.Recovered } })
+      setData(finalData)
+    }
+    fethcer()
+
+  }, [])
+
+  return (
+    <>
+      <div >
+        <Navbar />
+        {/* Desktop version */}
+        <div className="sm:hidden md:hidden lg:flex">
+          <ResponsiveContainer
+            className="mx-auto mt-32 "
+            width="90%"
+            height={500}
+          >
+            <LineChart
+              data={data}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="death" stroke="red" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="recovered" stroke="green" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+
+        {/* Mobile version */}
+        <div className="sm:flex md:hidden lg:hidden">
+          <ResponsiveContainer
+            className="mx-auto mt-32  "
+            width="90%"
+            height={500}
+          >
+            <LineChart
+              data={data}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="death" stroke="red" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="recovered" stroke="green" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+
+      </div>
+    </>
+
   )
 }
 
