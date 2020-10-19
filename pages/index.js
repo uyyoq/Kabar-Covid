@@ -6,6 +6,7 @@ import axios from "axios"
 import { getArticle } from "../constant/api"
 import InfiniteScroll from 'react-infinite-scroll-component';
 import HeadComponent from '../components/Head/head'
+import Loading from '../components/Loading/loading'
 // import Loading from "../components/Loading/loading"
 
 const KabarCovid = () => {
@@ -30,7 +31,7 @@ const KabarCovid = () => {
     if (dataArticles !== []) {
       setTimeout(() => {
         fetch()
-      }, 5000)
+      }, 3000)
     }
   }, [page])
 
@@ -46,7 +47,7 @@ const KabarCovid = () => {
         dataLength={dataArticles.length} // this props should arrays
         next={fetchMoreData} // event call when
         hasMore={true}
-        loader={<h1>Loading</h1>}
+        loader={<Loading />}
       >
         {
           dataArticles.map(data => (
